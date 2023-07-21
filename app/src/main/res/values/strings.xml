@@ -10,4 +10,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_gallery">Gallery</string>
     <string name="menu_slideshow">Slideshow</string>
+    <string name="pinned_tasks">Pinned Tasks</string>
+    <string name="recent_deployments">Recent Deployments</string>
+    <string name="recent_tasks">Recent Tasks</string>
 </resources>
