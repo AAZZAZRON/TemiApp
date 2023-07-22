@@ -10,9 +10,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.temi.temiapp.MainActivity
-import com.temi.temiapp.R
 import com.temi.temiapp.databinding.FragmentHomeBinding
+import com.temi.temiapp.utils.ALL_TASKS
+import com.temi.temiapp.utils.Task
 
 class HomeFragment : Fragment() {
 
@@ -38,9 +38,10 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
 
+        // recent deployments
         val recent_deployments: RecyclerView = binding.recentDeployments
-        val adapter = RecentDeploymentsAdapter(this.context)
-        recent_deployments.adapter = adapter
+        val recent_deployments_adapter = RecentDeploymentsAdapter(this.context)
+        recent_deployments.adapter = recent_deployments_adapter
         recent_deployments.setHasFixedSize(true)
         recent_deployments.layoutManager = LinearLayoutManager(this.context)
 
@@ -50,9 +51,29 @@ class HomeFragment : Fragment() {
             Snackbar.make(view, "Deploying...", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
             items.add("Hello" + items.size)
-            adapter.setItems(items)
-            adapter.notifyItemInserted(items.size - 1)
+            recent_deployments_adapter.setItems(items)
+            recent_deployments_adapter.notifyItemInserted(items.size - 1)
         }
+
+
+        // pinned tasks
+        val pinnedView: RecyclerView = binding.pinnedTasks
+        val pinnedTasks = ALL_TASKS.filter { it.isPinned } as ArrayList
+
+        val pinnedAdapter = PinnedTasksAdapter(this.context, pinnedTasks)
+        pinnedView.adapter = pinnedAdapter
+        pinnedView.setHasFixedSize(true)
+        pinnedView.layoutManager = LinearLayoutManager(this.context)
+
+
+        // recent tasks
+        val recentView: RecyclerView = binding.recentTasks
+        val recentTasks = ALL_TASKS.filter {it.id == 1} as ArrayList<Task>
+
+        val recentAdapter = RecentTasksAdapter(this.context, recentTasks)
+        recentView.adapter = recentAdapter
+        recentView.setHasFixedSize(true)
+        recentView.layoutManager = LinearLayoutManager(this.context)
 
         return root
     }
