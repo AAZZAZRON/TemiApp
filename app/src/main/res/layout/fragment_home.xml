@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/LightBlue"
     app:layout_constraintTop_toTopOf="parent"
     tools:context=".ui.home.HomeFragment">
 
@@ -46,34 +47,34 @@
                 android:layout_marginStart="30dp"
                 android:text="@string/recent_deployments"
                 android:textAppearance="@style/header_text_style"
-                app:layout_constraintBottom_toTopOf="@+id/recentDeployments"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.cardview.widget.CardView
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_marginEnd="64dp"
+                app:backgroundTint="#3FB5B1"
+                app:fabSize="auto"
+                app:layout_constraintBottom_toTopOf="@+id/recentDeployments"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@android:drawable/ic_input_add" />
+
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recentDeployments"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_weight="1"
-                android:padding="8dp"
-                app:cardBackgroundColor="#9C27B0"
-                app:cardCornerRadius="16dp"
+                android:background="@drawable/rounded_recycler_view"
+                app:circularflow_defaultRadius="32dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/recentDeploymentsHeader">
+                app:layout_constraintTop_toBottomOf="@+id/recentDeploymentsHeader" />
 
-                <TextView
-                    android:id="@+id/recentDeploymentsText"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="10dp"
-                    android:gravity="center"
-                    android:padding="8dp"
-                    android:text="@string/recent_deployments"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-            </androidx.cardview.widget.CardView>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -110,23 +111,12 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    app:cardBackgroundColor="#9C27B0"
-                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/pinnedTasksHeader">
-
-                    <TextView
-                        android:id="@+id/pinnedTasksText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="Pinned Tasks"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-                </androidx.cardview.widget.CardView>
+                    app:layout_constraintTop_toBottomOf="@+id/pinnedTasksHeader" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -154,23 +144,12 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:padding="8dp"
-                    app:cardBackgroundColor="#9C27B0"
-                    app:cardCornerRadius="16dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="32dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/recentTasksHeader">
-
-                    <TextView
-                        android:id="@+id/recentTasksText"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_margin="10dp"
-                        android:gravity="center"
-                        android:padding="8dp"
-                        android:text="Recent Tasks"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
-                </androidx.cardview.widget.CardView>
+                    app:layout_constraintTop_toBottomOf="@+id/recentTasksHeader" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
