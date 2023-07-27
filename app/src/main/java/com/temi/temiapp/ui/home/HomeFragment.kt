@@ -38,28 +38,35 @@ class HomeFragment : Fragment() {
             textView.text = it
         }
 
-        // recent deployments
-        val recent_deployments: RecyclerView = binding.recentDeployments
-        val recent_deployments_adapter = RecentDeploymentsAdapter(this.context)
-        recent_deployments.adapter = recent_deployments_adapter
-        recent_deployments.setHasFixedSize(true)
-        recent_deployments.layoutManager = LinearLayoutManager(this.context)
+//        // recent deployments
+//        val recent_deployments: RecyclerView = binding.recentDeployments
+//        val recent_deployments_adapter = RecentDeploymentsAdapter(this.context)
+//        recent_deployments.adapter = recent_deployments_adapter
+//        recent_deployments.setHasFixedSize(true)
+//        recent_deployments.layoutManager = LinearLayoutManager(this.context)
+//
+//        val items = ArrayList<String>()
+//        val fab: View = binding.fab2
+//        fab.setOnClickListener { view ->
+//            Snackbar.make(view, "Deploying...", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null).show()
+//            items.add("Hello" + items.size)
+//            recent_deployments_adapter.setItems(items)
+//            recent_deployments_adapter.notifyItemInserted(items.size - 1)
+//        }
 
-        val items = ArrayList<String>()
-        val fab: View = binding.fab2
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Deploying...", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-            items.add("Hello" + items.size)
-            recent_deployments_adapter.setItems(items)
-            recent_deployments_adapter.notifyItemInserted(items.size - 1)
-        }
+
+        // current tasks
+        val currentView: RecyclerView = binding.currentTasks
+        val currentAdapter = CurrentTasksAdapter(this.context)
+        currentView.adapter = currentAdapter
+        currentView.setHasFixedSize(true)
+        currentView.layoutManager = LinearLayoutManager(this.context)
 
 
         // pinned tasks
         val pinnedView: RecyclerView = binding.pinnedTasks
         val pinnedTasks = ALL_TASKS.filter { it.isPinned } as ArrayList
-
         val pinnedAdapter = PinnedTasksAdapter(this.context, pinnedTasks)
         pinnedView.adapter = pinnedAdapter
         pinnedView.setHasFixedSize(true)
@@ -68,12 +75,17 @@ class HomeFragment : Fragment() {
 
         // recent tasks
         val recentView: RecyclerView = binding.recentTasks
-        val recentTasks = ALL_TASKS.filter {it.id == 1} as ArrayList<Task>
-
-        val recentAdapter = RecentTasksAdapter(this.context, recentTasks)
+        val recentAdapter = RecentTasksAdapter(this.context)
         recentView.adapter = recentAdapter
         recentView.setHasFixedSize(true)
         recentView.layoutManager = LinearLayoutManager(this.context)
+
+        // allow show current tasks
+        pinnedAdapter.setCurrentAdapter(currentAdapter)
+        recentAdapter.setCurrentAdapter(currentAdapter)
+
+        // allow show recent tasks
+        currentAdapter.setRecentAdapter(recentAdapter)
 
         return root
     }

@@ -18,6 +18,8 @@ class PinnedTasksAdapter(
     private val pinnedTasks: java.util.ArrayList<Task>
 ) : RecyclerView.Adapter<PinnedTasksAdapter.ViewHolder>() {
 
+    private lateinit var currentAdapter: CurrentTasksAdapter
+
     companion object {
         private const val TAG = "PinnedTasksAdapter"
     }
@@ -38,6 +40,10 @@ class PinnedTasksAdapter(
         holder.bind(position)
     }
 
+    fun setCurrentAdapter(currentAdapter: CurrentTasksAdapter) {
+        this.currentAdapter = currentAdapter
+    }
+
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icon = itemView.findViewById<ImageView>(R.id.icon)
         private val name = itemView.findViewById<TextView>(R.id.taskName)
@@ -51,6 +57,7 @@ class PinnedTasksAdapter(
             runTaskButton.setOnClickListener { view ->
                 Snackbar.make(view, "Running \"${task.name}\"...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+                currentAdapter.addTask(task)
             }
         }
     }

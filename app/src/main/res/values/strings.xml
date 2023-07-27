@@ -13,4 +13,6 @@
     <string name="pinned_tasks">Pinned Tasks</string>
     <string name="recent_deployments">Recent Deployments</string>
     <string name="recent_tasks">Recent Tasks</string>
+    <string name="map">Map</string>
+    <string name="current_tasks">Current Tasks</string>
 </resources>
