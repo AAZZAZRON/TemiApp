@@ -45,9 +45,14 @@ class RecentTasksAdapter(
     }
 
     fun addTask(task: Task) {
-        recentTasks.add(task)
-        notifyItemInserted(recentTasks.size - 1)
+        recentTasks.add(0, task)
+        notifyItemInserted(0)
+        if (recentTasks.size > 3) {
+            recentTasks.removeAt(3)
+            notifyItemRemoved(3)
+        }
     }
+
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icon = itemView.findViewById<ImageView>(R.id.icon)

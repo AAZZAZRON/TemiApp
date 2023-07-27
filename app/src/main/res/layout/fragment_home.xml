@@ -8,23 +8,12 @@
     app:layout_constraintTop_toTopOf="parent"
     tools:context=".ui.home.HomeFragment">
 
-    <TextView
-        android:id="@+id/text_home"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="64dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="48dp"
         android:layout_marginEnd="64dp"
         android:layout_marginBottom="64dp"
         android:orientation="vertical"

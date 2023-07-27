@@ -27,16 +27,16 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+//        val homeViewModel =
+//            ViewModelProvider(this).get(HomeViewModel::class.java)
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+//
+//        val textView: TextView = binding.textHome
+//        homeViewModel.text.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
 
 //        // recent deployments
 //        val recent_deployments: RecyclerView = binding.recentDeployments
@@ -80,9 +80,11 @@ class HomeFragment : Fragment() {
         recentView.setHasFixedSize(true)
         recentView.layoutManager = LinearLayoutManager(this.context)
 
+
         // allow show current tasks
         pinnedAdapter.setCurrentAdapter(currentAdapter)
         recentAdapter.setCurrentAdapter(currentAdapter)
+
 
         // allow show recent tasks
         currentAdapter.setRecentAdapter(recentAdapter)
