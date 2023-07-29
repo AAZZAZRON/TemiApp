@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.temi.temiapp.R
 import com.temi.temiapp.utils.Task
@@ -26,18 +28,21 @@ class CurrentTasksAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.pinned_task_item, parent, false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.current_task_item, parent, false)
         val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.height = parent.height / 4
+        layoutParams.height = parent.height / 3
         return ViewHolder(view)
     }
 
     fun addTask(task: Task) {
-        currentTasks.add(task)
-        notifyItemInserted(currentTasks.size - 1)
+        currentTasks.add(0, task)
+        notifyItemInserted(0)
+    }
+
+    fun runAddedTask(task: Task, progressBar: ProgressBar) {
         // coroutine
         CoroutineScope(coroutineDispatcher).launch {
-            task.executeTask(this@CurrentTasksAdapter)
+            task.executeTask(this@CurrentTasksAdapter, progressBar)
         }
     }
 
@@ -53,6 +58,7 @@ class CurrentTasksAdapter(
         return currentTasks.size
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
     }
@@ -64,13 +70,16 @@ class CurrentTasksAdapter(
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icon = itemView.findViewById<ImageView>(R.id.icon)
         private val name = itemView.findViewById<TextView>(R.id.taskName)
-
+        private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
 
         fun bind(position: Int) {
             Log.d(TAG, "runTask: ${position}")
             val task = currentTasks[position]
             icon.setImageResource(task.icon)
             name.text = task.name
+
+            // get a reference
+            runAddedTask(task, progressBar)
         }
     }
 }

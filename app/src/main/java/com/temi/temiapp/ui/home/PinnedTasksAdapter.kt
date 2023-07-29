@@ -25,7 +25,7 @@ class PinnedTasksAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.pinned_task_item, parent, false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.task_item, parent, false)
         val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
         layoutParams.height = parent.height / 4
         return ViewHolder(view)
