@@ -11,7 +11,7 @@ data class Task(val name: String, val description: String, val icon: Int, val ru
     companion object {
         private val count: AtomicInteger = AtomicInteger(0) // ids start at 1
     }
-    var id: Number = -1
+    var id: Int = -1
     var isPinned: Boolean = true
 
     fun addExtraFields():Task {

@@ -1,6 +1,7 @@
 package com.temi.temiapp.ui.home
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,13 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.temi.temiapp.R
 import com.temi.temiapp.utils.Task
+import com.temi.temiapp.utils.saveTasks
 
 class RecentTasksAdapter(
     private val context: Context?,
+    private val recentTasks: ArrayList<Task>,
+    private val editor: SharedPreferences.Editor
 ) : RecyclerView.Adapter<RecentTasksAdapter.ViewHolder>() {
 
     private lateinit var currentAdapter: CurrentTasksAdapter
-    private val recentTasks = ArrayList<Task>()
 
     companion object {
         private const val TAG = "RecentTasksAdapter"
@@ -51,6 +54,7 @@ class RecentTasksAdapter(
             recentTasks.removeAt(3)
             notifyItemRemoved(3)
         }
+        saveTasks(editor, "recentTasks", recentTasks)
     }
 
 

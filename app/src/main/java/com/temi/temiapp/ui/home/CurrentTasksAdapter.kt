@@ -17,7 +17,6 @@ import kotlinx.coroutines.*
 class CurrentTasksAdapter(
     private val context: Context?,
 ) : RecyclerView.Adapter<CurrentTasksAdapter.ViewHolder>() {
-
     private lateinit var recentAdapter: RecentTasksAdapter
     private val currentTasks = ArrayList<Task>()
 
