@@ -11,10 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.temi.temiapp.databinding.FragmentHomeBinding
 import com.temi.temiapp.utils.ALL_TASKS
+import com.temi.temiapp.utils.CompletedTask
 import com.temi.temiapp.utils.RESET
+import com.temi.temiapp.utils.StoredCompletedTask
 import com.temi.temiapp.utils.Task
-import com.temi.temiapp.utils.convertArrayListToJson
-import com.temi.temiapp.utils.convertJsonToArrayList
+import com.temi.temiapp.utils.alIntToJson
+import com.temi.temiapp.utils.jsonToAlStoredCompletedTask
+import com.temi.temiapp.utils.jsonToAlTask
 
 class HomeFragment : Fragment() {
 
@@ -62,22 +65,28 @@ class HomeFragment : Fragment() {
         val loaded = settings.getBoolean("loaded", false)
         var pinnedTasks = ArrayList<Task>()
         var currentTasks = ArrayList<Task>()
-        var recentTasks = ArrayList<Task>()
+        var allRecentTasks = ArrayList<StoredCompletedTask>()
         if (!loaded || RESET) {
             pinnedTasks = ALL_TASKS.filter { it.isPinned } as ArrayList
             currentTasks = ArrayList<Task>()
-            recentTasks = ArrayList<Task>()
+            allRecentTasks = ArrayList<StoredCompletedTask>()
             editor.putBoolean("loaded", true)
-            editor.putString("pinnedTasks", convertArrayListToJson(ArrayList(pinnedTasks.map { it.id })))
+            editor.putString("pinnedTasks", alIntToJson(ArrayList(pinnedTasks.map { it.id })))
             editor.apply()
         } else {
-            val pinnedTasksId = convertJsonToArrayList(settings.getString("pinnedTasks", "[]")!!)
-            val currentTasksId = convertJsonToArrayList(settings.getString("currentTasks", "[]")!!)
-            val recentTasksId = convertJsonToArrayList(settings.getString("recentTasks", "[]")!!)
-            Log.d("all tasks", ALL_TASKS[0].id.toString() + pinnedTasksId.contains(1))
-            pinnedTasks = ALL_TASKS.filter { pinnedTasksId.contains(it.id) } as ArrayList
-            currentTasks = ALL_TASKS.filter { currentTasksId.contains(it.id) } as ArrayList
-            recentTasks = ALL_TASKS.filter { recentTasksId.contains(it.id) } as ArrayList
+            pinnedTasks = jsonToAlTask(settings.getString("pinnedTasks", "[]")!!)
+            currentTasks = jsonToAlTask(settings.getString("currentTasks", "[]")!!)
+            allRecentTasks = jsonToAlStoredCompletedTask(settings.getString("allRecentTasks", "[]")!!)
+        }
+
+        val recentTasks = ArrayList<CompletedTask>()
+        for (i in 0..2) {
+            if (i >= allRecentTasks.size) {
+                break
+            }
+            val storedCompletedTask = allRecentTasks[i]
+            val task = ALL_TASKS.find { it.id == storedCompletedTask.task }!!
+            recentTasks.add(CompletedTask(task, storedCompletedTask.timestamp))
         }
 
 
@@ -99,7 +108,7 @@ class HomeFragment : Fragment() {
 
         // recent tasks
         val recentView: RecyclerView = binding.recentTasks
-        val recentAdapter = RecentTasksAdapter(this.context, recentTasks, editor)
+        val recentAdapter = RecentTasksAdapter(this.context, allRecentTasks, recentTasks, editor)
         recentView.adapter = recentAdapter
         recentView.setHasFixedSize(true)
         recentView.layoutManager = LinearLayoutManager(this.context)

@@ -4,6 +4,7 @@ import android.widget.ProgressBar
 import com.temi.temiapp.R
 import com.temi.temiapp.ui.home.CurrentTasksAdapter
 import kotlinx.coroutines.*
+import java.sql.Timestamp
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.random.Random
 
@@ -26,6 +27,10 @@ data class Task(val name: String, val description: String, val icon: Int, val ru
         adapter?.removeTask(this)
     }
 }
+
+data class StoredCompletedTask(val task: Int, val timestamp: Long)
+data class CompletedTask(val task: Task, val timestamp: Long)
+
 
 //@OptIn(DelicateCoroutinesApi::class)
 //fun tempRunTask() = CoroutineScope(Dispatchers.Default).launch {
