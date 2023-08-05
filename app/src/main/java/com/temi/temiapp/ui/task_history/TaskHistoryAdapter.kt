@@ -1,5 +1,6 @@
 package com.temi.temiapp.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,6 +14,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.temi.temiapp.R
 import com.temi.temiapp.utils.CompletedTask
 import com.temi.temiapp.utils.Task
+import java.text.SimpleDateFormat
+import java.util.Date
 
 class TaskHistoryAdapter (
     private val context: Context?,
@@ -42,12 +45,15 @@ class TaskHistoryAdapter (
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icon = itemView.findViewById<ImageView>(R.id.icon)
         private val name = itemView.findViewById<TextView>(R.id.taskName)
+        private val timestampText = itemView.findViewById<TextView>(R.id.timestamp)
 
+        @SuppressLint("SetTextI18n", "SimpleDateFormat", "WeekBasedYear")
         fun bind(position: Int) {
             Log.d(TAG, "runTask: ${position}")
             val (task, timestamp) = tasks[position]
             icon.setImageResource(task.icon)
             name.text = task.name
+            timestampText.text = "Ran on ${SimpleDateFormat("MMM dd, YYYY 'at' HH:mm:ss").format(Date(timestamp))}"
         }
     }
 }
