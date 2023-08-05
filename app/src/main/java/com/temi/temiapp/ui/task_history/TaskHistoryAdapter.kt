@@ -1,0 +1,54 @@
+package com.temi.temiapp.ui.home
+
+import android.content.Context
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
+import com.temi.temiapp.R
+import com.temi.temiapp.utils.CompletedTask
+import com.temi.temiapp.utils.Task
+
+class TaskHistoryAdapter (
+    private val context: Context?,
+    private val tasks: ArrayList<CompletedTask>
+) : RecyclerView.Adapter<TaskHistoryAdapter.ViewHolder>() {
+
+    companion object {
+        private const val TAG = "TaskHistoryAdapter"
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view: View = LayoutInflater.from(context).inflate(R.layout.task_history_item, parent, false)
+        val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+        layoutParams.height = parent.height / 7
+        return ViewHolder(view)
+    }
+
+
+    override fun getItemCount(): Int {
+        return tasks.size
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(position)
+    }
+
+    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val icon = itemView.findViewById<ImageView>(R.id.icon)
+        private val name = itemView.findViewById<TextView>(R.id.taskName)
+
+        fun bind(position: Int) {
+            Log.d(TAG, "runTask: ${position}")
+            val (task, timestamp) = tasks[position]
+            icon.setImageResource(task.icon)
+            name.text = task.name
+        }
+    }
+}
+

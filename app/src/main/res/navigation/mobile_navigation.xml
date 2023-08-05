@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.temi.temiapp.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_task_history"
+        android:name="com.temi.temiapp.ui.task_history.TaskHistoryFragment"
+        android:label="Task History"
+        tools:layout="@layout/fragment_task_history" />
 
     <fragment
         android:id="@+id/nav_slideshow"

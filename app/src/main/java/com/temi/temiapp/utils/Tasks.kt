@@ -4,7 +4,6 @@ import android.widget.ProgressBar
 import com.temi.temiapp.R
 import com.temi.temiapp.ui.home.CurrentTasksAdapter
 import kotlinx.coroutines.*
-import java.sql.Timestamp
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.random.Random
 
@@ -53,11 +52,11 @@ suspend fun tempRunTask(progressBar: ProgressBar) {
 
 val ALL_TASKS = mutableListOf<Task>(
     Task("Call Mom", "Description 1", R.drawable.ic_menu_camera) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
-    Task("Call to Lunch", "Description 2", R.drawable.ic_menu_gallery) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
+    Task("Call to Lunch", "Description 2", R.drawable.ic_menu_task_history) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
     Task("Call to Dinner", "Description 3", R.drawable.ic_menu_slideshow) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
     Task("Buy Toilet Paper", "Description 4", R.drawable.ic_menu_camera) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
     Task("Text Bobby", "Description 1", R.drawable.ic_menu_camera) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
-    Task("Order Pizza", "Description 2", R.drawable.ic_menu_gallery) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
+    Task("Order Pizza", "Description 2", R.drawable.ic_menu_task_history) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
     Task("Deliver Meds", "Description 3", R.drawable.ic_menu_slideshow) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
     Task("Sing a Song", "Description 4", R.drawable.ic_menu_camera) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
 ) as ArrayList<Task>

@@ -2,7 +2,6 @@ package com.temi.temiapp.ui.home
 
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,33 +31,9 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-//        val homeViewModel =
-//            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-//
-//        val textView: TextView = binding.textHome
-//        homeViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
 
-//        // recent deployments
-//        val recent_deployments: RecyclerView = binding.recentDeployments
-//        val recent_deployments_adapter = RecentDeploymentsAdapter(this.context)
-//        recent_deployments.adapter = recent_deployments_adapter
-//        recent_deployments.setHasFixedSize(true)
-//        recent_deployments.layoutManager = LinearLayoutManager(this.context)
-//
-//        val items = ArrayList<String>()
-//        val fab: View = binding.fab2
-//        fab.setOnClickListener { view ->
-//            Snackbar.make(view, "Deploying...", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null).show()
-//            items.add("Hello" + items.size)
-//            recent_deployments_adapter.setItems(items)
-//            recent_deployments_adapter.notifyItemInserted(items.size - 1)
-//        }
 
         val settings: SharedPreferences = requireActivity().getSharedPreferences("TemiApp", 0)
         val editor: SharedPreferences.Editor = settings.edit()

@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.temi.temiapp.R
+import com.temi.temiapp.utils.CompletedTask
 import com.temi.temiapp.utils.Task
 import kotlinx.coroutines.*
 
