@@ -9,12 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.temi.temiapp.databinding.FragmentTaskHistoryBinding
-import com.temi.temiapp.ui.home.CurrentTasksAdapter
 import com.temi.temiapp.ui.home.TaskHistoryAdapter
 import com.temi.temiapp.utils.ALL_TASKS
 import com.temi.temiapp.utils.CompletedTask
-import com.temi.temiapp.utils.StoredCompletedTask
-import com.temi.temiapp.utils.jsonToAlStoredCompletedTask
+import com.temi.temiapp.utils.StoredTask
+import com.temi.temiapp.utils.jsonToAlStoredTask
 
 class TaskHistoryFragment : Fragment() {
 
@@ -33,7 +32,7 @@ class TaskHistoryFragment : Fragment() {
         val root: View = binding.root
 
         val settings: SharedPreferences = requireActivity().getSharedPreferences("TemiApp", 0)
-        val allRecentTasks: ArrayList<StoredCompletedTask> = jsonToAlStoredCompletedTask(settings.getString("allRecentTasks", "[]")!!)
+        val allRecentTasks: ArrayList<StoredTask> = jsonToAlStoredTask(settings.getString("allRecentTasks", "[]")!!)
         val recentTasks: ArrayList<CompletedTask> = allRecentTasks.map { CompletedTask(ALL_TASKS.find { task -> task.id == it.task }!!, it.timestamp) } as ArrayList<CompletedTask>
 
         val taskHistoryView: RecyclerView = binding.taskHistory

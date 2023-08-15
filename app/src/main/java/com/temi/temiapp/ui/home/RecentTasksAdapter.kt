@@ -14,15 +14,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.temi.temiapp.R
 import com.temi.temiapp.utils.CompletedTask
-import com.temi.temiapp.utils.StoredCompletedTask
+import com.temi.temiapp.utils.ManageStorage
+import com.temi.temiapp.utils.StoredTask
 import com.temi.temiapp.utils.Task
-import com.temi.temiapp.utils.saveStoredCompletedTask
+import com.temi.temiapp.utils.saveStoredTask
 import java.text.SimpleDateFormat
 import java.util.Date
 
 class RecentTasksAdapter(
     private val context: Context?,
-    private val allRecentTasks: ArrayList<StoredCompletedTask>,
+    private val allRecentTasks: ArrayList<StoredTask>,
     private val recentTasks: ArrayList<CompletedTask>,
     private val editor: SharedPreferences.Editor
 ) : RecyclerView.Adapter<RecentTasksAdapter.ViewHolder>() {
@@ -61,8 +62,9 @@ class RecentTasksAdapter(
             recentTasks.removeAt(3)
             notifyItemRemoved(3)
         }
-        allRecentTasks.add(0, StoredCompletedTask(task.id, timestamp))
-        saveStoredCompletedTask(editor, "allRecentTasks", allRecentTasks)
+        allRecentTasks.add(0, StoredTask(task.id, timestamp))
+        ManageStorage.addRecentTask(task)
+//        saveStoredTask(editor, "allRecentTasks", allRecentTasks)
     }
 
 

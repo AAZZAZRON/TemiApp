@@ -29,7 +29,6 @@ class MainActivity : AppCompatActivity() {
         binding.appBarMain.fab.setOnClickListener { view ->
             Snackbar.make(view, "Deploying...", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
-
         }
 
         val drawerLayout: DrawerLayout = binding.drawerLayout

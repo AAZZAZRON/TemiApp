@@ -11,11 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.temi.temiapp.databinding.FragmentHomeBinding
 import com.temi.temiapp.utils.ALL_TASKS
 import com.temi.temiapp.utils.CompletedTask
+import com.temi.temiapp.utils.ManageStorage
 import com.temi.temiapp.utils.RESET
-import com.temi.temiapp.utils.StoredCompletedTask
+import com.temi.temiapp.utils.StoredTask
 import com.temi.temiapp.utils.Task
 import com.temi.temiapp.utils.alIntToJson
-import com.temi.temiapp.utils.jsonToAlStoredCompletedTask
+import com.temi.temiapp.utils.jsonToAlStoredTask
 import com.temi.temiapp.utils.jsonToAlTask
 
 class HomeFragment : Fragment() {
@@ -37,21 +38,26 @@ class HomeFragment : Fragment() {
 
         val settings: SharedPreferences = requireActivity().getSharedPreferences("TemiApp", 0)
         val editor: SharedPreferences.Editor = settings.edit()
+        ManageStorage.init(settings, editor)
+
+
         val loaded = settings.getBoolean("loaded", false)
         var pinnedTasks = ArrayList<Task>()
         var currentTasks = ArrayList<Task>()
-        var allRecentTasks = ArrayList<StoredCompletedTask>()
+        var allRecentTasks = ArrayList<StoredTask>()
+
+
         if (!loaded || RESET) {
             pinnedTasks = ALL_TASKS.filter { it.isPinned } as ArrayList
             currentTasks = ArrayList<Task>()
-            allRecentTasks = ArrayList<StoredCompletedTask>()
+            allRecentTasks = ArrayList<StoredTask>()
             editor.putBoolean("loaded", true)
             editor.putString("pinnedTasks", alIntToJson(ArrayList(pinnedTasks.map { it.id })))
             editor.apply()
         } else {
             pinnedTasks = jsonToAlTask(settings.getString("pinnedTasks", "[]")!!)
             currentTasks = jsonToAlTask(settings.getString("currentTasks", "[]")!!)
-            allRecentTasks = jsonToAlStoredCompletedTask(settings.getString("allRecentTasks", "[]")!!)
+            allRecentTasks = jsonToAlStoredTask(settings.getString("allRecentTasks", "[]")!!)
         }
 
         val recentTasks = ArrayList<CompletedTask>()

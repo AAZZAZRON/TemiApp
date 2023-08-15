@@ -27,7 +27,7 @@ data class Task(val name: String, val description: String, val icon: Int, val ru
     }
 }
 
-data class StoredCompletedTask(val task: Int, val timestamp: Long)
+data class StoredTask(val task: Int, val timestamp: Long)
 data class CompletedTask(val task: Task, val timestamp: Long)
 
 

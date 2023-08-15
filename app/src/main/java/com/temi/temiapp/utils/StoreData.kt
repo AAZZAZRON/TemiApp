@@ -11,7 +11,7 @@ fun alIntToJson(arrayList: ArrayList<Int>): String {
     return Gson().toJson(arrayList)
 }
 
-fun alStoredCompletedTaskToJson(arrayList: ArrayList<StoredCompletedTask>): String {
+fun alStoredTaskToJson(arrayList: ArrayList<StoredTask>): String {
     return Gson().toJson(arrayList)
 }
 
@@ -22,9 +22,9 @@ fun jsonToAlTask(json: String): ArrayList<Task> {
     return ALL_TASKS.filter { tmp.contains(it.id) } as ArrayList<Task>
 }
 
-fun jsonToAlStoredCompletedTask(json: String): ArrayList<StoredCompletedTask> {
+fun jsonToAlStoredTask(json: String): ArrayList<StoredTask> {
     Log.d("CompletedTask", json)
-    val type: Type = object : TypeToken<ArrayList<StoredCompletedTask>>() {}.type
+    val type: Type = object : TypeToken<ArrayList<StoredTask>>() {}.type
     return Gson().fromJson(json, type)
 }
 
@@ -37,8 +37,8 @@ fun saveTask(editor: SharedPreferences.Editor, id: String, tasks: ArrayList<Task
     editor.apply()
 }
 
-fun saveStoredCompletedTask(editor: SharedPreferences.Editor, id: String, tasks: ArrayList<StoredCompletedTask>) {
-    val json = alStoredCompletedTaskToJson(tasks)
+fun saveStoredTask(editor: SharedPreferences.Editor, id: String, tasks: ArrayList<StoredTask>) {
+    val json = alStoredTaskToJson(tasks)
     Log.d("saveTasks", json)
     editor.putString(id, json)
     editor.apply()
