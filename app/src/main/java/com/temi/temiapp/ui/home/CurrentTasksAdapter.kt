@@ -19,7 +19,7 @@ class CurrentTasksAdapter(
 ) : RecyclerView.Adapter<CurrentTasksAdapter.ViewHolder>(), RunningTasksListener {
     private lateinit var recentAdapter: RecentTasksAdapter
     // make a copy of the running tasks
-    private val myRunningTasks: ArrayList<CurrentTask> = ArrayList(BackgroundTasks.runningTasks)
+    private val runningTasks: ArrayList<CurrentTask> = BackgroundTasks.runningTasks
 
     companion object {
         private const val TAG = "CurrentTasksAdapter"
@@ -35,7 +35,7 @@ class CurrentTasksAdapter(
 
 
     override fun getItemCount(): Int {
-        return myRunningTasks.size
+        return runningTasks.size
     }
 
 
@@ -54,7 +54,7 @@ class CurrentTasksAdapter(
 
         fun bind(position: Int) {
             Log.d(TAG, "runTask: ${position}")
-            val currentTask: CurrentTask = myRunningTasks[position]
+            val currentTask: CurrentTask = runningTasks[position]
             icon.setImageResource(currentTask.task.icon)
             name.text = currentTask.task.name
             progressBar.progress = currentTask.progress
@@ -70,30 +70,21 @@ class CurrentTasksAdapter(
         Log.d(TAG, "onDestroyListener: ")
     }
 
-    override fun onRunningTasksUpdatedAdd(currentTask: CurrentTask) {
-        myRunningTasks.add(0, currentTask.copy())
-        notifyItemInserted(0)
-
+    override fun onRunningTasksUpdatedAdd(index: Int) {
+        notifyItemInserted(index)
         Log.i("Add", BackgroundTasks.runningTasks.toString())
-        Log.i("Add", myRunningTasks.toString())
+        Log.i("Add", runningTasks.toString())
     }
 
-    override fun onRunningTasksUpdatedRemove(currentTask: CurrentTask) {
-        val index = myRunningTasks.indexOf(currentTask)
-        myRunningTasks.removeAt(index)
+    override fun onRunningTasksUpdatedRemove(index: Int) {
         notifyItemRemoved(index)
     }
 
-    override fun onRunningTasksUpdate(runningTasks: List<CurrentTask>) {
-        Log.i("Add", BackgroundTasks.runningTasks.toString())
-        Log.i("Add", myRunningTasks.toString())
-
-        for (i in runningTasks.indices) {
-            if (myRunningTasks[i] != runningTasks[i]) {
-                myRunningTasks[i].progress = runningTasks[i].progress
-                notifyItemChanged(i)
-            }
-        }
+    override fun onRunningTasksUpdate(currentTask: CurrentTask) {
+        Log.i("Update", BackgroundTasks.runningTasks.toString())
+        Log.i("Update", runningTasks.toString())
+        val index = runningTasks.indexOf(currentTask)
+        notifyItemChanged(index)
     }
 }
 

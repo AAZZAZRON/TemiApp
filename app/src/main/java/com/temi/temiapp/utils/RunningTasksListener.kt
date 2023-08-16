@@ -1,7 +1,7 @@
 package com.temi.temiapp.utils
 
 interface RunningTasksListener {
-    fun onRunningTasksUpdate(runningTasks: List<CurrentTask>)
-    fun onRunningTasksUpdatedAdd(currentTask: CurrentTask)
-    fun onRunningTasksUpdatedRemove(currentTask: CurrentTask)
+    fun onRunningTasksUpdate(currentTask: CurrentTask)
+    fun onRunningTasksUpdatedAdd(index: Int)
+    fun onRunningTasksUpdatedRemove(index: Int)
 }

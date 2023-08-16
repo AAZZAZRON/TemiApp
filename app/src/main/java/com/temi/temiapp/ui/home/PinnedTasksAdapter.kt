@@ -58,7 +58,6 @@ class PinnedTasksAdapter(
             runTaskButton.setOnClickListener { view ->
                 Snackbar.make(view, "Running \"${task.name}\"...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-//                currentAdapter.addTask(task)
                 BackgroundTasks.addTask(task)
             }
         }
