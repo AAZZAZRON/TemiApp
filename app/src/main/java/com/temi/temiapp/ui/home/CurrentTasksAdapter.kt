@@ -62,11 +62,11 @@ class CurrentTasksAdapter(
     }
 
     fun onCreateListener() {
-        BackgroundTasks.addListener(this)
+        BackgroundTasks.addRunningListener(this)
         Log.d(TAG, "onCreateListener: ")
     }
     fun onDestroyListener() {
-        BackgroundTasks.removeListener(this)
+        BackgroundTasks.removeRunningListener(this)
         Log.d(TAG, "onDestroyListener: ")
     }
 

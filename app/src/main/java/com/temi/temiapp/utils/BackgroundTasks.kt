@@ -7,27 +7,31 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 object BackgroundTasks {
-    private val listeners: MutableList<RunningTasksListener> = mutableListOf()
+    private val runningTasksListeners: MutableList<RunningTasksListener> = mutableListOf()
+    private val recentTasksListeners: MutableList<RecentTasksListener> = mutableListOf()
     val runningTasks: ArrayList<CurrentTask> = ArrayList()
 
 
     fun addTask(task: Task) {
         val currentTask = CurrentTask(task, 0)
         runningTasks.add(0, currentTask)
-        notifyListenersAdd(0)
+        notifyRunningListenersAdd(0)
         executeTask(currentTask)
     }
 
     private fun removeTask(currentTask: CurrentTask) {
         val index: Int = runningTasks.indexOf(currentTask)
         runningTasks.remove(currentTask)
-        notifyListenersRemove(index)
+        notifyRunningListenersRemove(index)
+
+        ManageStorage.addRecentTask(currentTask.task)
+        notifyRecentListenersAdd(CompletedTask(currentTask.task, System.currentTimeMillis()))
     }
 
     private fun executeTask(currentTask: CurrentTask) {
         fun updateProgress(progress: Int) {
             currentTask.progress = progress
-            notifyListeners(currentTask)
+            notifyRunningListenersUpdate(currentTask)
             Log.i("BackgroundTasks", "Task ${currentTask.task.id} progress: $progress")
         }
 
@@ -39,29 +43,43 @@ object BackgroundTasks {
         }
     }
 
-    fun addListener(listener: RunningTasksListener) {
-        listeners.add(listener)
+    fun addRunningListener(listener: RunningTasksListener) {
+        runningTasksListeners.add(listener)
     }
 
-    fun removeListener(listener: RunningTasksListener) {
-        listeners.remove(listener)
+    fun removeRunningListener(listener: RunningTasksListener) {
+        runningTasksListeners.remove(listener)
     }
 
-    private fun notifyListenersAdd(index: Int) {
-        for (listener in listeners) {
+    private fun notifyRunningListenersAdd(index: Int) {
+        for (listener in runningTasksListeners) {
             listener.onRunningTasksUpdatedAdd(index)
         }
     }
 
-    private fun notifyListeners(currentTask: CurrentTask) {
-        for (listener in listeners) {
+    private fun notifyRunningListenersUpdate(currentTask: CurrentTask) {
+        for (listener in runningTasksListeners) {
             listener.onRunningTasksUpdate(currentTask)
         }
     }
 
-    private fun notifyListenersRemove(index: Int) {
-        for (listener in listeners) {
+    private fun notifyRunningListenersRemove(index: Int) {
+        for (listener in runningTasksListeners) {
             listener.onRunningTasksUpdatedRemove(index)
+        }
+    }
+
+    fun addRecentListener(listener: RecentTasksListener) {
+        recentTasksListeners.add(listener)
+    }
+
+    fun removeRecentListener(listener: RecentTasksListener) {
+        recentTasksListeners.remove(listener)
+    }
+
+    private fun notifyRecentListenersAdd(completedTask: CompletedTask) {
+        for (listener in recentTasksListeners) {
+            listener.onRecentTasksUpdatedAdd(completedTask)
         }
     }
 }

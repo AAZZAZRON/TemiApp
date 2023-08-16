@@ -27,6 +27,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var currentAdapter: CurrentTasksAdapter
+    private lateinit var recentAdapter: RecentTasksAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -91,10 +92,11 @@ class HomeFragment : Fragment() {
 
         // recent tasks
         val recentView: RecyclerView = binding.recentTasks
-        val recentAdapter = RecentTasksAdapter(this.context, allRecentTasks, recentTasks, editor)
+        recentAdapter = RecentTasksAdapter(this.context, recentTasks, editor)
         recentView.adapter = recentAdapter
         recentView.setHasFixedSize(true)
         recentView.layoutManager = LinearLayoutManager(this.context)
+        recentAdapter.onCreateListener()
 
 
         // allow show current tasks
@@ -111,6 +113,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         currentAdapter.onDestroyListener()
+        recentAdapter.onDestroyListener()
         _binding = null
     }
 }
