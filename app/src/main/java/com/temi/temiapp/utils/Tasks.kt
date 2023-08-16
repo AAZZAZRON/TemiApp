@@ -35,7 +35,7 @@ data class CurrentTask(val task: Task, var progress: Int)
 // when implementing task runs, there would be a function to incrementProgressBar to show progress
 suspend fun tempRunTask(updateProgress: (Int) -> Unit) {
     // create a new thread
-    val seconds = 20//Random.nextInt(3, 10)
+    val seconds = Random.nextInt(5, 20)
     for (i in 0..seconds) {
         delay(1000)
         updateProgress(i * 100 / seconds)
@@ -44,11 +44,11 @@ suspend fun tempRunTask(updateProgress: (Int) -> Unit) {
 
 val ALL_TASKS = mutableListOf<Task>(
     Task("Call Mom", "Description 1", R.drawable.ic_menu_camera) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
-//    Task("Call to Lunch", "Description 2", R.drawable.ic_menu_task_history) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
-//    Task("Call to Dinner", "Description 3", R.drawable.ic_menu_slideshow) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
-//    Task("Buy Toilet Paper", "Description 4", R.drawable.ic_menu_camera) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
-//    Task("Text Bobby", "Description 1", R.drawable.ic_menu_camera) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
-//    Task("Order Pizza", "Description 2", R.drawable.ic_menu_task_history) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
-//    Task("Deliver Meds", "Description 3", R.drawable.ic_menu_slideshow) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
-//    Task("Sing a Song", "Description 4", R.drawable.ic_menu_camera) { progressBar -> tempRunTask(progressBar) }.addExtraFields(),
+    Task("Call to Lunch", "Description 2", R.drawable.ic_menu_task_history) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
+    Task("Call to Dinner", "Description 3", R.drawable.ic_menu_slideshow) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
+    Task("Buy Toilet Paper", "Description 4", R.drawable.ic_menu_camera) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
+    Task("Text Bobby", "Description 1", R.drawable.ic_menu_camera) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
+    Task("Order Pizza", "Description 2", R.drawable.ic_menu_task_history) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
+    Task("Deliver Meds", "Description 3", R.drawable.ic_menu_slideshow) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
+    Task("Sing a Song", "Description 4", R.drawable.ic_menu_camera) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
 ) as ArrayList<Task>

@@ -22,6 +22,7 @@ class TaskHistoryFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var taskHistoryAdapter: TaskHistoryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,10 +37,11 @@ class TaskHistoryFragment : Fragment() {
         val recentTasks: ArrayList<CompletedTask> = allRecentTasks.map { CompletedTask(ALL_TASKS.find { task -> task.id == it.task }!!, it.timestamp) } as ArrayList<CompletedTask>
 
         val taskHistoryView: RecyclerView = binding.taskHistory
-        val taskHistoryAdapter = TaskHistoryAdapter(this.context, recentTasks)
+        taskHistoryAdapter = TaskHistoryAdapter(this.context, recentTasks)
         taskHistoryView.adapter = taskHistoryAdapter
         taskHistoryView.setHasFixedSize(true)
         taskHistoryView.layoutManager = LinearLayoutManager(context)
+        taskHistoryAdapter.onCreateListener()
 
 
 
@@ -48,6 +50,7 @@ class TaskHistoryFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        taskHistoryAdapter.onDestroyListener()
         _binding = null
     }
 }
