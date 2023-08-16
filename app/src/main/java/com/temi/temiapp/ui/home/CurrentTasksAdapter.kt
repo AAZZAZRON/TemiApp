@@ -10,19 +10,19 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.temi.temiapp.R
-import com.temi.temiapp.utils.CompletedTask
-import com.temi.temiapp.utils.Task
-import kotlinx.coroutines.*
+import com.temi.temiapp.utils.BackgroundTasks
+import com.temi.temiapp.utils.CurrentTask
+import com.temi.temiapp.utils.RunningTasksListener
 
 class CurrentTasksAdapter(
     private val context: Context?,
-) : RecyclerView.Adapter<CurrentTasksAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<CurrentTasksAdapter.ViewHolder>(), RunningTasksListener {
     private lateinit var recentAdapter: RecentTasksAdapter
-    private val currentTasks = ArrayList<Task>()
+    // make a copy of the running tasks
+    private val myRunningTasks: ArrayList<CurrentTask> = ArrayList(BackgroundTasks.runningTasks)
 
     companion object {
         private const val TAG = "CurrentTasksAdapter"
-        private val coroutineDispatcher = Dispatchers.Default
     }
 
 
@@ -33,28 +33,9 @@ class CurrentTasksAdapter(
         return ViewHolder(view)
     }
 
-    fun addTask(task: Task) {
-        currentTasks.add(0, task)
-        notifyItemInserted(0)
-    }
-
-    fun runAddedTask(task: Task, progressBar: ProgressBar) {
-        // coroutine
-        CoroutineScope(coroutineDispatcher).launch {
-            task.executeTask(this@CurrentTasksAdapter, progressBar)
-        }
-    }
-
-    fun removeTask(task: Task) {
-        val index = currentTasks.indexOf(task)
-        currentTasks.removeAt(index)
-        notifyItemRemoved(index)
-        recentAdapter.addTask(task)
-    }
-
 
     override fun getItemCount(): Int {
-        return currentTasks.size
+        return myRunningTasks.size
     }
 
 
@@ -73,12 +54,45 @@ class CurrentTasksAdapter(
 
         fun bind(position: Int) {
             Log.d(TAG, "runTask: ${position}")
-            val task = currentTasks[position]
-            icon.setImageResource(task.icon)
-            name.text = task.name
+            val currentTask: CurrentTask = myRunningTasks[position]
+            icon.setImageResource(currentTask.task.icon)
+            name.text = currentTask.task.name
+            progressBar.progress = currentTask.progress
+        }
+    }
 
-            // get a reference
-            runAddedTask(task, progressBar)
+    fun onCreateListener() {
+        BackgroundTasks.addListener(this)
+        Log.d(TAG, "onCreateListener: ")
+    }
+    fun onDestroyListener() {
+        BackgroundTasks.removeListener(this)
+        Log.d(TAG, "onDestroyListener: ")
+    }
+
+    override fun onRunningTasksUpdatedAdd(currentTask: CurrentTask) {
+        myRunningTasks.add(0, currentTask.copy())
+        notifyItemInserted(0)
+
+        Log.i("Add", BackgroundTasks.runningTasks.toString())
+        Log.i("Add", myRunningTasks.toString())
+    }
+
+    override fun onRunningTasksUpdatedRemove(currentTask: CurrentTask) {
+        val index = myRunningTasks.indexOf(currentTask)
+        myRunningTasks.removeAt(index)
+        notifyItemRemoved(index)
+    }
+
+    override fun onRunningTasksUpdate(runningTasks: List<CurrentTask>) {
+        Log.i("Add", BackgroundTasks.runningTasks.toString())
+        Log.i("Add", myRunningTasks.toString())
+
+        for (i in runningTasks.indices) {
+            if (myRunningTasks[i] != runningTasks[i]) {
+                myRunningTasks[i].progress = runningTasks[i].progress
+                notifyItemChanged(i)
+            }
         }
     }
 }

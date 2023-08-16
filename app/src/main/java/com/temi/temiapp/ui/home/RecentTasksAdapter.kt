@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.temi.temiapp.R
+import com.temi.temiapp.utils.BackgroundTasks
 import com.temi.temiapp.utils.CompletedTask
 import com.temi.temiapp.utils.ManageStorage
 import com.temi.temiapp.utils.StoredTask
@@ -85,7 +86,7 @@ class RecentTasksAdapter(
             rerunTaskButton.setOnClickListener { view ->
                 Snackbar.make(view, "Rerunning \"${task.name}\"...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-                currentAdapter.addTask(task)
+                BackgroundTasks.addTask(task)
             }
         }
     }

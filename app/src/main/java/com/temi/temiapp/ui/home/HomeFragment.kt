@@ -26,6 +26,7 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var currentAdapter: CurrentTasksAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -65,18 +66,19 @@ class HomeFragment : Fragment() {
             if (i >= allRecentTasks.size) {
                 break
             }
-            val storedCompletedTask = allRecentTasks[i]
-            val task = ALL_TASKS.find { it.id == storedCompletedTask.task }!!
-            recentTasks.add(CompletedTask(task, storedCompletedTask.timestamp))
+            val storedTask = allRecentTasks[i]
+            val task = ALL_TASKS.find { it.id == storedTask.task }!!
+            recentTasks.add(CompletedTask(task, storedTask.timestamp))
         }
 
 
         // current tasks
         val currentView: RecyclerView = binding.currentTasks
-        val currentAdapter = CurrentTasksAdapter(this.context)
+        currentAdapter = CurrentTasksAdapter(this.context)
         currentView.adapter = currentAdapter
         currentView.setHasFixedSize(true)
         currentView.layoutManager = LinearLayoutManager(this.context)
+        currentAdapter.onCreateListener()
 
 
         // pinned tasks
@@ -108,6 +110,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        currentAdapter.onDestroyListener()
         _binding = null
     }
 }

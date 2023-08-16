@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.temi.temiapp.R
+import com.temi.temiapp.utils.BackgroundTasks
 import com.temi.temiapp.utils.Task
 
 class PinnedTasksAdapter(
@@ -57,7 +58,8 @@ class PinnedTasksAdapter(
             runTaskButton.setOnClickListener { view ->
                 Snackbar.make(view, "Running \"${task.name}\"...", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
-                currentAdapter.addTask(task)
+//                currentAdapter.addTask(task)
+                BackgroundTasks.addTask(task)
             }
         }
     }
