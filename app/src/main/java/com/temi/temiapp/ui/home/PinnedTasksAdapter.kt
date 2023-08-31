@@ -16,7 +16,8 @@ import com.temi.temiapp.utils.Task
 
 class PinnedTasksAdapter(
     private val context: Context?,
-    private val pinnedTasks: java.util.ArrayList<Task>
+    private val pinnedTasks: java.util.ArrayList<Task>,
+    private val showPopupListener: (Task) -> Unit
 ) : RecyclerView.Adapter<PinnedTasksAdapter.ViewHolder>() {
 
     private lateinit var currentAdapter: CurrentTasksAdapter
@@ -55,10 +56,13 @@ class PinnedTasksAdapter(
             val task = pinnedTasks[position]
             icon.setImageResource(task.icon)
             name.text = task.name
-            runTaskButton.setOnClickListener { view ->
-                Snackbar.make(view, "Running \"${task.name}\"...", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-                BackgroundTasks.addTask(task)
+//            runTaskButton.setOnClickListener { view ->
+//                Snackbar.make(view, "Running \"${task.name}\"...", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show()
+//                BackgroundTasks.addTask(task)
+//            }
+            runTaskButton.setOnClickListener {
+                showPopupListener.invoke(task)
             }
         }
     }

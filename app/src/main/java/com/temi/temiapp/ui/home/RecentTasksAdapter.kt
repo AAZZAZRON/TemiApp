@@ -25,7 +25,7 @@ import java.util.Date
 class RecentTasksAdapter(
     private val context: Context?,
     private val recentTasks: ArrayList<CompletedTask>,
-    private val editor: SharedPreferences.Editor
+    private val showPopupListener: (Task) -> Unit
 ) : RecyclerView.Adapter<RecentTasksAdapter.ViewHolder>(), RecentTasksListener {
 
     private lateinit var currentAdapter: CurrentTasksAdapter
@@ -81,10 +81,13 @@ class RecentTasksAdapter(
             icon.setImageResource(task.icon)
             name.text = task.name
             timestampText.text = "Ran on ${SimpleDateFormat("MMM dd, YYYY 'at' HH:mm:ss").format(Date(timestamp))}"
-            rerunTaskButton.setOnClickListener { view ->
-                Snackbar.make(view, "Rerunning \"${task.name}\"...", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-                BackgroundTasks.addTask(task)
+//            rerunTaskButton.setOnClickListener { view ->
+//                Snackbar.make(view, "Rerunning \"${task.name}\"...", Snackbar.LENGTH_LONG)
+//                    .setAction("Action", null).show()
+//                BackgroundTasks.addTask(task)
+//            }
+            rerunTaskButton.setOnClickListener {
+                showPopupListener.invoke(task)
             }
         }
     }

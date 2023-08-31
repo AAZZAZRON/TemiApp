@@ -1,10 +1,15 @@
 package com.temi.temiapp.ui.home
 
+import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.PopupWindow
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +23,7 @@ import com.temi.temiapp.utils.Task
 import com.temi.temiapp.utils.alIntToJson
 import com.temi.temiapp.utils.jsonToAlStoredTask
 import com.temi.temiapp.utils.jsonToAlTask
+
 
 class HomeFragment : Fragment() {
 
@@ -35,6 +41,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
+
         val root: View = binding.root
 
 
@@ -73,6 +80,8 @@ class HomeFragment : Fragment() {
         }
 
 
+
+
         // current tasks
         val currentView: RecyclerView = binding.currentTasks
         currentAdapter = CurrentTasksAdapter(this.context)
@@ -84,7 +93,7 @@ class HomeFragment : Fragment() {
 
         // pinned tasks
         val pinnedView: RecyclerView = binding.pinnedTasks
-        val pinnedAdapter = PinnedTasksAdapter(this.context, pinnedTasks)
+        val pinnedAdapter = PinnedTasksAdapter(this.context, pinnedTasks, ::showPopup)
         pinnedView.adapter = pinnedAdapter
         pinnedView.setHasFixedSize(true)
         pinnedView.layoutManager = LinearLayoutManager(this.context)
@@ -92,7 +101,7 @@ class HomeFragment : Fragment() {
 
         // recent tasks
         val recentView: RecyclerView = binding.recentTasks
-        recentAdapter = RecentTasksAdapter(this.context, recentTasks, editor)
+        recentAdapter = RecentTasksAdapter(this.context, recentTasks, ::showPopup)
         recentView.adapter = recentAdapter
         recentView.setHasFixedSize(true)
         recentView.layoutManager = LinearLayoutManager(this.context)
@@ -108,6 +117,27 @@ class HomeFragment : Fragment() {
         currentAdapter.setRecentAdapter(recentAdapter)
 
         return root
+    }
+
+    @SuppressLint("InflateParams")
+    fun showPopup(task: Task) {
+        Log.i("HomeFragment", "showPopup $task")
+        val inflater = LayoutInflater.from(requireContext())
+        val popupView: View = inflater.inflate(com.temi.temiapp.R.layout.task_popup, null)
+        val popupWindow = PopupWindow(
+            popupView,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            true
+        )
+
+        // Set up the close button in the popup
+        val closePopupButton: Button = popupView.findViewById(com.temi.temiapp.R.id.closePopupButton)
+        closePopupButton.setOnClickListener {
+            popupWindow.dismiss()
+        }
+
+        popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
     }
 
     override fun onDestroyView() {

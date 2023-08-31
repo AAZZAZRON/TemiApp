@@ -70,7 +70,7 @@
                 android:layout_weight="1">
 
                 <TextView
-                    android:id="@+id/currentTasksHeader"
+                    android:id="@+id/popupHeader"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="30dp"
@@ -89,7 +89,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/currentTasksHeader" />
+                    app:layout_constraintTop_toBottomOf="@+id/popupHeader" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
