@@ -15,4 +15,5 @@
     <string name="recent_tasks">Recent Tasks</string>
     <string name="map">Map</string>
     <string name="current_tasks">Current Tasks</string>
+    <string name="run_task">Run Task</string>
 </resources>

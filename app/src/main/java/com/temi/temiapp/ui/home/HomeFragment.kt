@@ -11,11 +11,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.PopupWindow
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.temi.temiapp.databinding.FragmentHomeBinding
 import com.temi.temiapp.utils.ALL_TASKS
+import com.temi.temiapp.utils.BackgroundTasks
 import com.temi.temiapp.utils.CompletedTask
 import com.temi.temiapp.utils.ManageStorage
 import com.temi.temiapp.utils.RESET
@@ -139,10 +142,12 @@ class HomeFragment : Fragment() {
             true
         )
 
+        val popupHeader: TextView = popupView.findViewById(com.temi.temiapp.R.id.popupHeader)
+        popupHeader.text = task.name
 
         // set up the task spec info
         val taskSpecs = popupView.findViewById<RecyclerView>(com.temi.temiapp.R.id.taskSpecs)
-        val taskSpecsAdapter = TaskSpecsAdapter(this.context, task)
+        val taskSpecsAdapter = TaskSpecsAdapter(this.context, task.specs, task)
         taskSpecs.adapter = taskSpecsAdapter
         taskSpecs.setHasFixedSize(true)
         taskSpecs.layoutManager = LinearLayoutManager(this.context)
@@ -150,9 +155,26 @@ class HomeFragment : Fragment() {
 
 
         // Set up the close button in the popup
-        val closePopupButton: Button = popupView.findViewById(com.temi.temiapp.R.id.closePopupButton)
-        closePopupButton.setOnClickListener {
+        val runTaskButton: Button = popupView.findViewById(com.temi.temiapp.R.id.runTaskButton)
+        runTaskButton.setOnClickListener {
+            val chosenOptionInd: Int = taskSpecsAdapter.getCurrentPressed()
+
+            if (chosenOptionInd == -1) { // error trap for no values chosen
+                Snackbar.make(it, "Please choose an option", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+                return@setOnClickListener
+            }
+
+
+            val chosenOption = task.specs[chosenOptionInd].option
+            Log.i("HomeFragment", "chosenOption: $chosenOption")
+            task.specs[chosenOptionInd].checked = false
+
             popupWindow.dismiss()
+
+            // run the task
+            BackgroundTasks.addTask(task)
+
         }
 
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)

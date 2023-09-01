@@ -5,34 +5,37 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.RadioButton
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.snackbar.Snackbar
 import com.temi.temiapp.R
-import com.temi.temiapp.utils.BackgroundTasks
 import com.temi.temiapp.utils.Task
+import com.temi.temiapp.utils.TaskSpec
 
 class TaskSpecsAdapter(
     private val context: Context?,
-    private val task: Task,
+    private var specs: ArrayList<TaskSpec>,
+    private val task: Task
 ) : RecyclerView.Adapter<TaskSpecsAdapter.ViewHolder>() {
 
     companion object {
         private const val TAG = "PinnedTasksAdapter"
+        private var currentPressed = -1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View = LayoutInflater.from(context).inflate(R.layout.task_item, parent, false)
+        val view: View = LayoutInflater.from(context).inflate(R.layout.task_option_item, parent, false)
         val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.height = parent.height / 4
+
         return ViewHolder(view)
     }
 
 
     override fun getItemCount(): Int {
-        return task.specs.size
+        return specs.size
+    }
+
+    fun getCurrentPressed(): Int {
+        return currentPressed
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -41,21 +44,26 @@ class TaskSpecsAdapter(
 
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val icon = itemView.findViewById<ImageView>(R.id.icon)
-        private val name = itemView.findViewById<TextView>(R.id.taskName)
-        private val runTaskButton = itemView.findViewById<Button>(R.id.runTask)
+        private val radioButton: RadioButton = itemView.findViewById(R.id.taskSpecOption)
 
         fun bind(position: Int) {
-            Log.d(TAG, "runTask: ${position}")
-            val spec = task.specs[position]
-            icon.setImageResource(task.icon)
-            name.text = task.name
-//            runTaskButton.setOnClickListener { view ->
-//                Snackbar.make(view, "Running \"${task.name}\"...", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//                BackgroundTasks.addTask(task)
-//            }
+            Log.d(TAG, "notify: ${position}")
+//            specs[position].checked = false // default
+            val spec = specs[position]
+            radioButton.text = spec.option
+            radioButton.isChecked = spec.checked
+
+            radioButton.setOnClickListener {
+                Log.d(TAG, "clicked: ${position}")
+                if (currentPressed != -1) {
+                    specs[currentPressed].checked = false
+                    notifyItemChanged(currentPressed)
+                }
+
+                specs[position].checked = !specs[position].checked
+                notifyItemChanged(position)
+                currentPressed = position
+            }
         }
     }
 }
-

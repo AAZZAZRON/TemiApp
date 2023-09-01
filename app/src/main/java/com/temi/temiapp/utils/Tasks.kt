@@ -17,9 +17,9 @@ data class Task(val name: String, val description: String, val icon: Int, val ru
 
     fun addExtraFields():Task {
         id = count.incrementAndGet()
-        specs.add(TaskSpec("Run on Temi", true))
-        specs.add(TaskSpec("Run on Phone", true))
-        specs.add(TaskSpec("Run on Both", true))
+        specs.add(TaskSpec("Run on Temi"))
+        specs.add(TaskSpec("Run on Phone"))
+        specs.add(TaskSpec("Run on Both"))
         return this
     }
 }
