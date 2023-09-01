@@ -56,20 +56,18 @@ class HomeFragment : Fragment() {
 
         val loaded = settings.getBoolean("loaded", false)
         var pinnedTasks = ArrayList<Task>()
-        var currentTasks = ArrayList<Task>()
         var allRecentTasks = ArrayList<StoredTask>()
 
 
         if (!loaded || RESET) {
             pinnedTasks = ALL_TASKS.filter { it.isPinned } as ArrayList
-            currentTasks = ArrayList<Task>()
             allRecentTasks = ArrayList<StoredTask>()
             editor.putBoolean("loaded", true)
             editor.putString("pinnedTasks", alIntToJson(ArrayList(pinnedTasks.map { it.id })))
+            editor.putString("allRecentTasks", "[]")
             editor.apply()
         } else {
             pinnedTasks = jsonToAlTask(settings.getString("pinnedTasks", "[]")!!)
-            currentTasks = jsonToAlTask(settings.getString("currentTasks", "[]")!!)
             allRecentTasks = jsonToAlStoredTask(settings.getString("allRecentTasks", "[]")!!)
         }
 
@@ -80,7 +78,7 @@ class HomeFragment : Fragment() {
             }
             val storedTask = allRecentTasks[i]
             val task = ALL_TASKS.find { it.id == storedTask.task }!!
-            recentTasks.add(CompletedTask(task, storedTask.timestamp))
+            recentTasks.add(CompletedTask(task, storedTask.option, storedTask.timestamp))
         }
 
 

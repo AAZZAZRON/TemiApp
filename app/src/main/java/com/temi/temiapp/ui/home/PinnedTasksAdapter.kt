@@ -56,11 +56,7 @@ class PinnedTasksAdapter(
             val task = pinnedTasks[position]
             icon.setImageResource(task.icon)
             name.text = task.name
-//            runTaskButton.setOnClickListener { view ->
-//                Snackbar.make(view, "Running \"${task.name}\"...", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//                BackgroundTasks.addTask(task)
-//            }
+
             runTaskButton.setOnClickListener {
                 showPopupListener.invoke(task)
             }

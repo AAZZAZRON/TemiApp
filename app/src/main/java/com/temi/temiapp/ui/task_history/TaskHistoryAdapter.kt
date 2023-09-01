@@ -52,9 +52,9 @@ class TaskHistoryAdapter (
         @SuppressLint("SetTextI18n", "SimpleDateFormat", "WeekBasedYear")
         fun bind(position: Int) {
             Log.d(TAG, "runTask: ${position}")
-            val (task, timestamp) = tasks[position]
+            val (task, option, timestamp) = tasks[position]
             icon.setImageResource(task.icon)
-            name.text = task.name
+            name.text = task.name + " - " + option
             timestampText.text = "Ran on ${SimpleDateFormat("MMM dd, YYYY 'at' HH:mm:ss").format(Date(timestamp))}"
         }
     }

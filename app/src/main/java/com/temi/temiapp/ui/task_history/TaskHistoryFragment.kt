@@ -34,7 +34,7 @@ class TaskHistoryFragment : Fragment() {
 
         val settings: SharedPreferences = requireActivity().getSharedPreferences("TemiApp", 0)
         val allRecentTasks: ArrayList<StoredTask> = jsonToAlStoredTask(settings.getString("allRecentTasks", "[]")!!)
-        val recentTasks: ArrayList<CompletedTask> = allRecentTasks.map { CompletedTask(ALL_TASKS.find { task -> task.id == it.task }!!, it.timestamp) } as ArrayList<CompletedTask>
+        val recentTasks: ArrayList<CompletedTask> = allRecentTasks.map { CompletedTask(ALL_TASKS.find { task -> task.id == it.task }!!, it.option, it.timestamp) } as ArrayList<CompletedTask>
 
         val taskHistoryView: RecyclerView = binding.taskHistory
         taskHistoryAdapter = TaskHistoryAdapter(this.context, recentTasks)

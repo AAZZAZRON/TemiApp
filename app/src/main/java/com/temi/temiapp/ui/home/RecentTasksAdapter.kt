@@ -54,18 +54,6 @@ class RecentTasksAdapter(
         this.currentAdapter = currentAdapter
     }
 
-    fun addTask(task: Task) {
-        val timestamp: Long = System.currentTimeMillis()
-        recentTasks.add(0, CompletedTask(task, timestamp))
-        notifyItemInserted(0)
-        if (recentTasks.size > 3) {
-            recentTasks.removeAt(3)
-            notifyItemRemoved(3)
-        }
-        ManageStorage.addRecentTask(task)
-//        saveStoredTask(editor, "allRecentTasks", allRecentTasks)
-    }
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val icon = itemView.findViewById<ImageView>(R.id.icon)
@@ -77,15 +65,12 @@ class RecentTasksAdapter(
         @SuppressLint("SetTextI18n", "SimpleDateFormat", "WeekBasedYear")
         fun bind(position: Int) {
             Log.d(TAG, "runTask: ${position}")
-            val (task, timestamp) = recentTasks[position]
+            val (task, option, timestamp) = recentTasks[position]
+            Log.d(TAG, "bindRecentTask: ${task.name} ${option} ${timestamp}")
             icon.setImageResource(task.icon)
-            name.text = task.name
+            name.text = task.name + " - " + option
             timestampText.text = "Ran on ${SimpleDateFormat("MMM dd, YYYY 'at' HH:mm:ss").format(Date(timestamp))}"
-//            rerunTaskButton.setOnClickListener { view ->
-//                Snackbar.make(view, "Rerunning \"${task.name}\"...", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null).show()
-//                BackgroundTasks.addTask(task)
-//            }
+
             rerunTaskButton.setOnClickListener {
                 showPopupListener.invoke(task)
             }

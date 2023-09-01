@@ -24,8 +24,8 @@ object BackgroundTasks {
         runningTasks.remove(currentTask)
         notifyRunningListenersRemove(index)
 
-        ManageStorage.addRecentTask(currentTask.task)
-        notifyRecentListenersAdd(CompletedTask(currentTask.task, System.currentTimeMillis()))
+        ManageStorage.addRecentTask(currentTask.task, currentTask.option)
+        notifyRecentListenersAdd(CompletedTask(currentTask.task, currentTask.option, System.currentTimeMillis()))
     }
 
     private fun executeTask(currentTask: CurrentTask) {

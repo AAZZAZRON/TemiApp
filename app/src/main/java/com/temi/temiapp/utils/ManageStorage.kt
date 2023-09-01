@@ -11,9 +11,9 @@ object ManageStorage {
         this.editor = editor
     }
 
-    fun addRecentTask(task: Task) {
+    fun addRecentTask(task: Task, option: String) {
         val timestamp: Long = System.currentTimeMillis()
-        val storedTask = StoredTask(task.id, timestamp)
+        val storedTask = StoredTask(task.id, option, timestamp)
         val recentTasks = jsonToAlStoredTask(settings.getString("allRecentTasks", "[]")!!)
         recentTasks.add(0, storedTask)
         saveStoredTask(editor, "allRecentTasks", recentTasks)
