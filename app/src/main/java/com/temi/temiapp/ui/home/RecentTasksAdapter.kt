@@ -37,7 +37,7 @@ class RecentTasksAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.completed_task_item, parent, false)
         val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.height = parent.height / 4
+//        layoutParams.height = parent.height / 4
         return ViewHolder(view)
     }
 
@@ -68,8 +68,8 @@ class RecentTasksAdapter(
             val (task, option, timestamp) = recentTasks[position]
             Log.d(TAG, "bindRecentTask: ${task.name} ${option} ${timestamp}")
             icon.setImageResource(task.icon)
-            name.text = task.name + " - " + option
-            timestampText.text = "Ran on ${SimpleDateFormat("MMM dd, YYYY 'at' HH:mm:ss").format(Date(timestamp))}"
+            name.text = task.name
+            timestampText.text = " - ${option}\nRan on ${SimpleDateFormat("MMM dd, YYYY 'at' HH:mm:ss").format(Date(timestamp))}"
 
             rerunTaskButton.setOnClickListener {
                 showPopupListener.invoke(task)
