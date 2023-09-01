@@ -173,7 +173,7 @@ class HomeFragment : Fragment() {
             popupWindow.dismiss()
 
             // run the task
-            BackgroundTasks.addTask(task)
+            BackgroundTasks.addTask(task, chosenOption)
 
         }
 

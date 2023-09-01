@@ -12,8 +12,8 @@ object BackgroundTasks {
     val runningTasks: ArrayList<CurrentTask> = ArrayList()
 
 
-    fun addTask(task: Task) {
-        val currentTask = CurrentTask(task, 0)
+    fun addTask(task: Task, option: String) {
+        val currentTask = CurrentTask(task, option, 0)
         runningTasks.add(0, currentTask)
         notifyRunningListenersAdd(0)
         executeTask(currentTask)

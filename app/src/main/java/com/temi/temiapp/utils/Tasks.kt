@@ -7,7 +7,7 @@ import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.random.Random
 
-data class Task(val name: String, val description: String, val icon: Int, val runTask: suspend(updateProgress: (Int) -> Unit) -> Unit) {
+data class Task(var name: String, val description: String, val icon: Int, val runTask: suspend(updateProgress: (Int) -> Unit) -> Unit) {
     companion object {
         private val count: AtomicInteger = AtomicInteger(0) // ids start at 1
     }
@@ -17,16 +17,16 @@ data class Task(val name: String, val description: String, val icon: Int, val ru
 
     fun addExtraFields():Task {
         id = count.incrementAndGet()
-        specs.add(TaskSpec("Run on Temi"))
-        specs.add(TaskSpec("Run on Phone"))
-        specs.add(TaskSpec("Run on Both"))
+        specs.add(TaskSpec("Option A"))
+        specs.add(TaskSpec("Option B"))
+        specs.add(TaskSpec("Option C"))
         return this
     }
 }
 
 data class StoredTask(val task: Int, val timestamp: Long)
 data class CompletedTask(val task: Task, val timestamp: Long)
-data class CurrentTask(val task: Task, var progress: Int)
+data class CurrentTask(val task: Task, val option: String, var progress: Int)
 data class TaskSpec(val option: String, var checked: Boolean = false)
 
 

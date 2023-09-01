@@ -1,5 +1,6 @@
 package com.temi.temiapp.ui.home
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -52,11 +53,12 @@ class CurrentTasksAdapter(
         private val name = itemView.findViewById<TextView>(R.id.taskName)
         private val progressBar = itemView.findViewById<ProgressBar>(R.id.progressBar)
 
+        @SuppressLint("SetTextI18n")
         fun bind(position: Int) {
             Log.d(TAG, "runTask: ${position}")
             val currentTask: CurrentTask = runningTasks[position]
             icon.setImageResource(currentTask.task.icon)
-            name.text = currentTask.task.name
+            name.text = "${currentTask.task.name} - ${currentTask.option}"
             progressBar.progress = currentTask.progress
         }
     }
