@@ -13,9 +13,13 @@ data class Task(val name: String, val description: String, val icon: Int, val ru
     }
     var id: Int = -1
     var isPinned: Boolean = true
+    var specs: ArrayList<TaskSpec> = ArrayList()
 
     fun addExtraFields():Task {
         id = count.incrementAndGet()
+        specs.add(TaskSpec("Run on Temi", true))
+        specs.add(TaskSpec("Run on Phone", true))
+        specs.add(TaskSpec("Run on Both", true))
         return this
     }
 }
@@ -23,14 +27,9 @@ data class Task(val name: String, val description: String, val icon: Int, val ru
 data class StoredTask(val task: Int, val timestamp: Long)
 data class CompletedTask(val task: Task, val timestamp: Long)
 data class CurrentTask(val task: Task, var progress: Int)
+data class TaskSpec(val option: String, var checked: Boolean = false)
 
 
-//@OptIn(DelicateCoroutinesApi::class)
-//fun tempRunTask() = CoroutineScope(Dispatchers.Default).launch {
-//    // create a new thread
-//    println("Running task...")
-//    delay(3000)
-//}
 
 // when implementing task runs, there would be a function to incrementProgressBar to show progress
 suspend fun tempRunTask(updateProgress: (Int) -> Unit) {
@@ -41,6 +40,7 @@ suspend fun tempRunTask(updateProgress: (Int) -> Unit) {
         updateProgress(i * 100 / seconds)
     }
 }
+
 
 val ALL_TASKS = mutableListOf<Task>(
     Task("Call Mom", "Description 1", R.drawable.ic_menu_camera) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),

@@ -2,6 +2,7 @@ package com.temi.temiapp.ui.home
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -124,12 +125,29 @@ class HomeFragment : Fragment() {
         Log.i("HomeFragment", "showPopup $task")
         val inflater = LayoutInflater.from(requireContext())
         val popupView: View = inflater.inflate(com.temi.temiapp.R.layout.task_popup, null)
+
+        val screenWidth = Resources.getSystem().displayMetrics.widthPixels
+        val screenHeight = Resources.getSystem().displayMetrics.heightPixels
+
+        val popupWidth = (screenWidth * 0.5).toInt()
+        val popupHeight = (screenHeight * 0.7).toInt()
+
         val popupWindow = PopupWindow(
             popupView,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
-            ViewGroup.LayoutParams.WRAP_CONTENT,
+            popupWidth,
+            popupHeight,
             true
         )
+
+
+        // set up the task spec info
+        val taskSpecs = popupView.findViewById<RecyclerView>(com.temi.temiapp.R.id.taskSpecs)
+        val taskSpecsAdapter = TaskSpecsAdapter(this.context, task)
+        taskSpecs.adapter = taskSpecsAdapter
+        taskSpecs.setHasFixedSize(true)
+        taskSpecs.layoutManager = LinearLayoutManager(this.context)
+
+
 
         // Set up the close button in the popup
         val closePopupButton: Button = popupView.findViewById(com.temi.temiapp.R.id.closePopupButton)

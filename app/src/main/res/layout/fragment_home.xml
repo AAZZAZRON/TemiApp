@@ -50,7 +50,7 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/taskHistory"
+                    android:id="@+id/map"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:background="@drawable/rounded_recycler_view"
