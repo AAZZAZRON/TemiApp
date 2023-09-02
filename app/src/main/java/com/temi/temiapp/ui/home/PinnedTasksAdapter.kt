@@ -20,8 +20,6 @@ class PinnedTasksAdapter(
     private val showPopupListener: (Task) -> Unit
 ) : RecyclerView.Adapter<PinnedTasksAdapter.ViewHolder>() {
 
-    private lateinit var currentAdapter: CurrentTasksAdapter
-
     companion object {
         private const val TAG = "PinnedTasksAdapter"
     }
@@ -40,10 +38,6 @@ class PinnedTasksAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
-    }
-
-    fun setCurrentAdapter(currentAdapter: CurrentTasksAdapter) {
-        this.currentAdapter = currentAdapter
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

@@ -29,6 +29,11 @@ import com.temi.temiapp.utils.jsonToAlStoredTask
 import com.temi.temiapp.utils.jsonToAlTask
 
 
+/**
+ * A simple [Fragment] subclass as the default destination in the navigation.
+ * This is the home screen of the app.
+ * It displays the current tasks, pinned tasks, and recent tasks.
+ */
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
@@ -36,6 +41,8 @@ class HomeFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+    /** Keep references to the adapters for the recycler views to add/remove listeners */
     private lateinit var currentAdapter: CurrentTasksAdapter
     private lateinit var recentAdapter: RecentTasksAdapter
 
@@ -48,17 +55,19 @@ class HomeFragment : Fragment() {
 
         val root: View = binding.root
 
-
+        // shared preferences for persistent storage
         val settings: SharedPreferences = requireActivity().getSharedPreferences("TemiApp", 0)
         val editor: SharedPreferences.Editor = settings.edit()
         ManageStorage.init(settings, editor)
 
 
         val loaded = settings.getBoolean("loaded", false)
-        var pinnedTasks = ArrayList<Task>()
-        var allRecentTasks = ArrayList<StoredTask>()
+        val pinnedTasks: ArrayList<Task>
+        val allRecentTasks: ArrayList<StoredTask>
 
 
+
+        /** load in values from persistent storage */
         if (!loaded || RESET) {
             pinnedTasks = ALL_TASKS.filter { it.isPinned } as ArrayList
             allRecentTasks = ArrayList<StoredTask>()
@@ -71,6 +80,7 @@ class HomeFragment : Fragment() {
             allRecentTasks = jsonToAlStoredTask(settings.getString("allRecentTasks", "[]")!!)
         }
 
+        /** convert the stored tasks (how they are stored in SharedPreferences) to completed tasks */
         val recentTasks = ArrayList<CompletedTask>()
         for (i in 0..2) {
             if (i >= allRecentTasks.size) {
@@ -83,6 +93,7 @@ class HomeFragment : Fragment() {
 
 
 
+        /** Set up the recycler views and adapters */
 
         // current tasks
         val currentView: RecyclerView = binding.currentTasks
@@ -90,7 +101,7 @@ class HomeFragment : Fragment() {
         currentView.adapter = currentAdapter
         currentView.setHasFixedSize(true)
         currentView.layoutManager = LinearLayoutManager(this.context)
-        currentAdapter.onCreateListener()
+        currentAdapter.onCreateListener() /** @see BackgroundTasks.addRunningListener */
 
 
         // pinned tasks
@@ -107,23 +118,22 @@ class HomeFragment : Fragment() {
         recentView.adapter = recentAdapter
         recentView.setHasFixedSize(true)
         recentView.layoutManager = LinearLayoutManager(this.context)
-        recentAdapter.onCreateListener()
+        recentAdapter.onCreateListener() /** @see BackgroundTasks.addRecentListener */
 
-
-        // allow show current tasks
-        pinnedAdapter.setCurrentAdapter(currentAdapter)
-        recentAdapter.setCurrentAdapter(currentAdapter)
-
-
-        // allow show recent tasks
-        currentAdapter.setRecentAdapter(recentAdapter)
 
         return root
     }
 
+
+    /**
+     * Show a popup window to choose the options for a task
+     * @param task the task to run
+     */
     @SuppressLint("InflateParams")
     fun showPopup(task: Task) {
         Log.i("HomeFragment", "showPopup $task")
+
+        /** Set up the popup window */
         val inflater = LayoutInflater.from(requireContext())
         val popupView: View = inflater.inflate(com.temi.temiapp.R.layout.task_popup, null)
 
@@ -140,43 +150,45 @@ class HomeFragment : Fragment() {
             true
         )
 
+
+        /** Customize based on task */
         val popupHeader: TextView = popupView.findViewById(com.temi.temiapp.R.id.popupHeader)
         popupHeader.text = task.name
 
         // set up the task spec info
         val taskSpecs = popupView.findViewById<RecyclerView>(com.temi.temiapp.R.id.taskSpecs)
-        val taskSpecsAdapter = TaskSpecsAdapter(this.context, task.specs, task)
+        val taskSpecsAdapter = TaskSpecsAdapter(this.context, task.specs)
         taskSpecs.adapter = taskSpecsAdapter
         taskSpecs.setHasFixedSize(true)
         taskSpecs.layoutManager = LinearLayoutManager(this.context)
 
 
 
-        // Set up the close button in the popup
+        /** When the run button is pressed, run the option selected if any */
         val runTaskButton: Button = popupView.findViewById(com.temi.temiapp.R.id.runTaskButton)
         runTaskButton.setOnClickListener {
             val chosenOptionInd: Int = taskSpecsAdapter.getCurrentPressed()
 
             if (chosenOptionInd == -1) { // error trap for no values chosen
-                Snackbar.make(it, "Please choose an option", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                Snackbar.make(it, "Please choose an option", Snackbar.LENGTH_LONG).setAction("Action", null).show()
                 return@setOnClickListener
             }
 
+            /** assert that an option was chosen */
 
             val chosenOption = task.specs[chosenOptionInd].option
             Log.i("HomeFragment", "chosenOption: $chosenOption")
             task.specs[chosenOptionInd].checked = false
+            popupWindow.dismiss() // close window
 
-            popupWindow.dismiss()
-
-            // run the task
+            /** run the task */
             BackgroundTasks.addTask(task, chosenOption)
-
         }
 
+        /** Show the popup window */
         popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0)
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

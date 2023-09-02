@@ -15,11 +15,13 @@ import com.temi.temiapp.utils.BackgroundTasks
 import com.temi.temiapp.utils.CurrentTask
 import com.temi.temiapp.utils.RunningTasksListener
 
+/**
+ * Adapter for the current tasks recycler view
+ */
 class CurrentTasksAdapter(
     private val context: Context?,
 ) : RecyclerView.Adapter<CurrentTasksAdapter.ViewHolder>(), RunningTasksListener {
-    private lateinit var recentAdapter: RecentTasksAdapter
-    // make a copy of the running tasks
+    /** List of current tasks */
     private val runningTasks: ArrayList<CurrentTask> = BackgroundTasks.runningTasks
 
     companion object {
@@ -30,7 +32,7 @@ class CurrentTasksAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.current_task_item, parent, false)
         val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.height = parent.height / 3
+        layoutParams.height = parent.height / 3 // TODO: make the heights of the items dynamic
         return ViewHolder(view)
     }
 
@@ -42,10 +44,6 @@ class CurrentTasksAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
-    }
-
-    fun setRecentAdapter(recentAdapter: RecentTasksAdapter) {
-        this.recentAdapter = recentAdapter
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -63,6 +61,8 @@ class CurrentTasksAdapter(
         }
     }
 
+
+    /** Functions to add/remove listeners */
     fun onCreateListener() {
         BackgroundTasks.addRunningListener(this)
         Log.d(TAG, "onCreateListener: ")
@@ -72,6 +72,8 @@ class CurrentTasksAdapter(
         Log.d(TAG, "onDestroyListener: ")
     }
 
+
+    /** override [RunningTasksListener] functions to update recycler view */
     override fun onRunningTasksUpdatedAdd(index: Int) {
         notifyItemInserted(index)
         Log.i("Add", BackgroundTasks.runningTasks.toString())

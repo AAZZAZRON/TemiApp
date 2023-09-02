@@ -19,6 +19,9 @@ import com.temi.temiapp.utils.Task
 import java.text.SimpleDateFormat
 import java.util.Date
 
+/**
+ * Adapter for the task history recycler view
+ */
 class TaskHistoryAdapter (
     private val context: Context?,
     private val tasks: ArrayList<CompletedTask>
@@ -31,7 +34,7 @@ class TaskHistoryAdapter (
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.task_history_item, parent, false)
         val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-        layoutParams.height = parent.height / 7
+        layoutParams.height = parent.height / 7 // TODO: make the height dynamic
         return ViewHolder(view)
     }
 
