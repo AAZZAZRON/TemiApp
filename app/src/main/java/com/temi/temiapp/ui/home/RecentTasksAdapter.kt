@@ -28,15 +28,13 @@ class RecentTasksAdapter(
     private val showPopupListener: (Task) -> Unit
 ) : RecyclerView.Adapter<RecentTasksAdapter.ViewHolder>(), RecentTasksListener {
 
-    private lateinit var currentAdapter: CurrentTasksAdapter
-
     companion object {
         private const val TAG = "RecentTasksAdapter"
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.completed_task_item, parent, false)
-        val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
+//        val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
 //        layoutParams.height = parent.height / 4
         return ViewHolder(view)
     }
@@ -48,10 +46,6 @@ class RecentTasksAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(position)
-    }
-
-    fun setCurrentAdapter(currentAdapter: CurrentTasksAdapter) {
-        this.currentAdapter = currentAdapter
     }
 
 
@@ -77,6 +71,8 @@ class RecentTasksAdapter(
         }
     }
 
+
+    /** add/remove listeners */
     fun onCreateListener() {
         BackgroundTasks.addRecentListener(this)
         Log.d(TAG, "onCreateRecentListener: ")
@@ -85,6 +81,8 @@ class RecentTasksAdapter(
         BackgroundTasks.removeRecentListener(this)
         Log.d(TAG, "onDestroyRecentListener: ")
     }
+
+    /** implement [RecentTasksListener] methods */
     override fun onRecentTasksUpdatedAdd(completedTask: CompletedTask) {
         recentTasks.add(0, completedTask)
         notifyItemInserted(0)

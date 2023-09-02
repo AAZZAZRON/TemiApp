@@ -11,21 +11,24 @@ import com.temi.temiapp.R
 import com.temi.temiapp.utils.Task
 import com.temi.temiapp.utils.TaskSpec
 
+/**
+ * Adapter for the task specs recycler view in the task options popup.
+ */
 class TaskSpecsAdapter(
     private val context: Context?,
     private var specs: ArrayList<TaskSpec>,
-    private val task: Task
 ) : RecyclerView.Adapter<TaskSpecsAdapter.ViewHolder>() {
 
     companion object {
         private const val TAG = "PinnedTasksAdapter"
+
+        /** The index of the currently pressed button. */
         private var currentPressed = -1
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View = LayoutInflater.from(context).inflate(R.layout.task_option_item, parent, false)
-        val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
-
+//        val layoutParams: ViewGroup.LayoutParams = view.layoutParams as ViewGroup.MarginLayoutParams
         return ViewHolder(view)
     }
 
@@ -34,6 +37,10 @@ class TaskSpecsAdapter(
         return specs.size
     }
 
+    /**
+     * Returns the index of the currently pressed button.
+     * @see HomeFragment.showPopup
+     */
     fun getCurrentPressed(): Int {
         return currentPressed
     }
@@ -48,11 +55,11 @@ class TaskSpecsAdapter(
 
         fun bind(position: Int) {
             Log.d(TAG, "notify: ${position}")
-//            specs[position].checked = false // default
             val spec = specs[position]
             radioButton.text = spec.option
             radioButton.isChecked = spec.checked
 
+            /** Update the chosen option when the user clicks on an option */
             radioButton.setOnClickListener {
                 Log.d(TAG, "clicked: ${position}")
                 if (currentPressed != -1) {

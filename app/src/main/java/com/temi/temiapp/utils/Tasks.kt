@@ -1,20 +1,31 @@
 package com.temi.temiapp.utils
 
-import android.widget.ProgressBar
 import com.temi.temiapp.R
-import com.temi.temiapp.ui.home.CurrentTasksAdapter
 import kotlinx.coroutines.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.random.Random
 
+
+/**
+ * Data classes for tasks.
+ * Template to create a task
+ * @param name the name of the task
+ * @param description the description of the task
+ * @param icon the icon of the task
+ * @param runTask the function to run when the task is started
+ */
 data class Task(var name: String, val description: String, val icon: Int, val runTask: suspend(updateProgress: (Int) -> Unit) -> Unit) {
     companion object {
+        /** generates unique ids for tasks */
         private val count: AtomicInteger = AtomicInteger(0) // ids start at 1
     }
     var id: Int = -1
     var isPinned: Boolean = true
+
+    /** the list of options (specifications) for the task */
     var specs: ArrayList<TaskSpec> = ArrayList()
 
+    /** adds custom fields to the task */
     fun addExtraFields():Task {
         id = count.incrementAndGet()
         specs.add(TaskSpec("Option A"))
@@ -24,9 +35,35 @@ data class Task(var name: String, val description: String, val icon: Int, val ru
     }
 }
 
+
+/**
+ * Data classes for tasks.
+ * Stores the task as an ID in persistent storage
+ * @see CompletedTask
+ */
 data class StoredTask(val task: Int, val option: String, val timestamp: Long)
+
+/**
+ * Data classes for tasks.
+ * This is how completed tasks are stored in the app (when its running)
+ */
 data class CompletedTask(val task: Task, val option: String, val timestamp: Long)
+
+/**
+ * Data classes for tasks.
+ * Keeps track of the current tasks that are running and their progress
+ * @param task the task
+ * @param option the option (specification) for the task
+ * @param progress the progress of the task (0-100)
+ * @see BackgroundTasks.executeTask
+ */
 data class CurrentTask(val task: Task, val option: String, var progress: Int)
+
+/**
+ * Data classes for tasks.
+ * @param option the option (specification) for the task
+ * @param checked whether the option is checked (selected)
+ */
 data class TaskSpec(val option: String, var checked: Boolean = false)
 
 
@@ -41,7 +78,9 @@ suspend fun tempRunTask(updateProgress: (Int) -> Unit) {
     }
 }
 
-
+/**
+ * The list of all tasks
+ */
 val ALL_TASKS = mutableListOf<Task>(
     Task("Call Mom", "Description 1", R.drawable.ic_menu_camera) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
     Task("Call to Lunch", "Description 2", R.drawable.ic_menu_task_history) { updateProgress -> tempRunTask(updateProgress) }.addExtraFields(),
