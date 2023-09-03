@@ -5,4 +5,4 @@ Using Android, I created a centralized application for Temi robots to be used in
 
 This is an ongoing project. The current app allows several tasks to be run simultaneously, and for tasks to be logged in persistent storage. 
 
-The goal is to have the app integrated with the [Temi SDK](https://github.com/robotemi/sdk) to have Temi-specific tasks such as navigation and speech recognition. 
+The goal is to have the app integrated with the [Temi SDK](https://github.com/robotemi/sdk) to have Temi-specific tasks such as navigation and speech recognition. We are attempting to get approval to use the SDK, which is currently protected by DRM. 
